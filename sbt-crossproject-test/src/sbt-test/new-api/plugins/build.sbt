@@ -8,7 +8,7 @@ lazy val foo =
   crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .crossType(CrossType.Pure)
     .settings(
-      scalaVersion := "2.11.11"
+      scalaVersion := "2.12.21"
     )
     .enablePlugins(PluginForAll)
     .jvmEnablePlugins(PluginForJVM)

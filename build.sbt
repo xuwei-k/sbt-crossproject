@@ -2,7 +2,7 @@ import Extra._
 
 inThisBuild(
   Def.settings(
-    scalaVersion := "2.12.10",
+    scalaVersion := "2.12.21",
     scalacOptions ++= Seq(
       "-deprecation",
       "-unchecked",
@@ -46,7 +46,12 @@ lazy val `sbt-scalajs-crossproject` =
     .settings(sbtPluginSettings)
     .settings(
       moduleName := "sbt-scalajs-crossproject",
-      addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.23")
+      addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.21.0"),
+      publish / skip := {
+        // TODO
+        // https://github.com/scala-js/scala-js/issues/5238
+        scalaBinaryVersion.value == "3"
+      }
     )
     .settings(publishSettings)
     .dependsOn(`sbt-crossproject`)
@@ -58,7 +63,7 @@ lazy val `sbt-scala-native-crossproject` =
     .settings(sbtPluginSettings)
     .settings(
       moduleName := "sbt-scala-native-crossproject",
-      addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.3.7")
+      addSbtPlugin("org.scala-native" % "sbt-scala-native" % "0.5.11")
     )
     .settings(publishSettings)
     .dependsOn(`sbt-crossproject`)
@@ -72,7 +77,22 @@ lazy val `sbt-crossproject` =
     .settings(scaladocFromReadme)
     .settings(publishSettings)
     .settings(
-      addSbtPlugin("org.portable-scala" % "sbt-platform-deps" % "1.0.2")
+      libraryDependencies ++= {
+        val sbtV = (pluginCrossBuild / sbtBinaryVersion).value
+        sbtV match {
+          case "2" =>
+            Nil
+          case _ =>
+            val scalaV = (update / scalaBinaryVersion).value
+            Seq(
+              Defaults.sbtPluginExtra(
+                "org.portable-scala" % "sbt-platform-deps" % "1.0.2",
+                sbtV,
+                scalaV
+              )
+            )
+        }
+      }
     )
 
 lazy val `sbt-crossproject-test` =
@@ -84,8 +104,8 @@ lazy val `sbt-crossproject-test` =
     .settings(
       scriptedLaunchOpts ++= Seq(
         "-Dplugin.version=" + version.value,
-        "-Dplugin.sn-version=0.3.7",
-        "-Dplugin.sjs-version=0.6.23"
+        "-Dplugin.sn-version=0.5.11",
+        "-Dplugin.sjs-version=1.21.0"
       ),
       scripted := scripted
         .dependsOn(
