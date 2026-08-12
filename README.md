@@ -55,8 +55,8 @@ lazy val foo =
   crossProject(JSPlatform, JVMPlatform, NativePlatform)
     .settings(sharedSettings)
     .settings(
-      // %%% now include Scala Native. It applies to all selected platforms
-      libraryDependencies += "org.example" %%% "foo" % "1.2.3"
+      // %% now include Scala Native. It applies to all selected platforms
+      libraryDependencies += "org.example" %% "foo" % "1.2.3"
     )
 
 // Optional in sbt 1.x (mandatory in sbt 0.13.x)

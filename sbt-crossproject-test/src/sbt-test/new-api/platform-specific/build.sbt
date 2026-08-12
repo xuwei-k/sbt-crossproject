@@ -1,5 +1,3 @@
-import sbtcrossproject.{crossProject, CrossType}
-
 val g = "org.example.platform-specific"
 val a = "bar"
 val v = "0.1.0"
@@ -22,7 +20,7 @@ lazy val foo =
       scalaVersion := "2.12.17"
     )
     .nativeSettings(
-      libraryDependencies += g %%% a % v,
+      libraryDependencies += g %% a % v,
       resolvers += Resolver.sonatypeRepo("snapshots")
     )
 

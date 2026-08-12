@@ -1,6 +1,4 @@
-import sbtcrossproject.{crossProject, CrossType}
-
-lazy val check = taskKey[Unit]("check settings are applied")
+lazy val check = inputKey[Unit]("check settings are applied")
 
 Global / checkedSettingSet := Set("global")
 

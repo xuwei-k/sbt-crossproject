@@ -4,7 +4,7 @@ val v = "0.1.0"
 
 val baseSettings = Seq(scalaVersion := "2.12.17")
 
-val externalDependency = Seq(libraryDependencies += g %%% a % v)
+val externalDependency = Seq(libraryDependencies += g %% a % v)
 
 lazy val bar = project
   .settings(baseSettings)
